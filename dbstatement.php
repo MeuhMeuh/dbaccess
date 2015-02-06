@@ -8,15 +8,45 @@
  * @author Alexis M.
  * @since 02/12/2014
  */
-class DbStatement extends PDOStatement {
+class DbStatement extends PDOStatement
+{
+    protected $keywords = array();
+    
+    /**
+     * Valeurs matchées.
+     * @var array
+     */
+    protected $boundValues = array();
 
-    protected   $keywords = array();
-    protected   $boundValues = array();
-    public      $queryString;
-    protected   $preview;
-    protected   $duration;
-    protected   $executed = false;
-    protected   $execCount = 0;
+    /**
+     * Preview de la query de la statement.
+     * @var string
+     */
+    protected $preview;
+
+    /**
+     * Durée de l'exécution (microsecondes).
+     * @var integer
+     */
+    protected $duration;
+
+    /**
+     * Statement déjà exécutée ?
+     * @var boolean
+     */
+    protected $executed = false;
+
+    /**
+     * Nombre d'exécution de la statement.
+     * @var integer
+     */
+    protected $execCount = 0;
+
+    /**
+     * Query courante.
+     * @var string
+     */
+    public $queryString;
 
     /**
      * "Bind" d'une valeur.
@@ -33,7 +63,7 @@ class DbStatement extends PDOStatement {
             $this->executed = false;
         }
 
-        $this->boundValues[]    =    array('parameter' => $parameter, 'value' => $value, 'PDOType' => $PDOType);
+        $this->boundValues[] = array('parameter' => $parameter, 'value' => $value, 'PDOType' => $PDOType);
         parent::bindValue($parameter, $value, $PDOType);
         
         return $this;
@@ -45,8 +75,8 @@ class DbStatement extends PDOStatement {
      * 
      * @return self
      */
-    public function bindValues($sqlValues = array()) {
-
+    public function bindValues($sqlValues = array())
+    {
         if (empty($sqlValues))
         {
             return $this;
@@ -57,7 +87,7 @@ class DbStatement extends PDOStatement {
             $sqlValues = array($sqlValues);
         }
 
-        foreach ($sqlValues AS $key => $value)
+        foreach ($sqlValues as $key => $value)
         {
             if (is_numeric($key))
             {
@@ -122,7 +152,7 @@ class DbStatement extends PDOStatement {
         // ? placeholders.
         if (array_key_exists(0, $this->boundValues) && $this->boundValues[0]['parameter'] === 1)
         {
-            foreach ($this->boundValues AS $boundParam)
+            foreach ($this->boundValues as $boundParam)
             {
                 $this->preview = preg_replace("/([\?])/", self::debugValue($boundParam), $this->preview, 1);
             }
