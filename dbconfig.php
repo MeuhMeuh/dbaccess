@@ -7,6 +7,10 @@ use Symfony\Component\Yaml\Yaml;
  * de la Db via les fichiers de configuration et la couche
  * d'accès à la Db.	
  * 
+ * @todo Supprimer la dépendance forte au composant YAML de Symfony.
+ * Privilégier une approche générique => Passage d'un fournisseur de configuration
+ * générique (interface ?) permettant de récupérer d'une façon homogène la config.
+ * 
  * @author Alexis M.
  * @since 01/12/2O14
  */

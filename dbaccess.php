@@ -108,17 +108,24 @@ class DbAccess
 	public function connect($dsn, $user, $password = null)
 	{
 		$statementClass = $this->getStatementClass();
+
 		try
 		{
+			// UTF-8 only.
 			$options = array(
 		    	PDO::MYSQL_ATTR_INIT_COMMAND    => 'SET NAMES utf8'
 		  	);
+
+			// Exceptions ON
 			$this->PDO = new \PDO($dsn, $user, $password, $options);
 			$this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			// Spécification des statements custom.
 			if (is_string($statementClass) && class_exists($statementClass))
 			{
 				$this->PDO->setAttribute(PDO::ATTR_STATEMENT_CLASS, array('DbStatement'));
 			}
+
 			$this->PDO->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 			return $this;
@@ -323,6 +330,8 @@ class DbAccess
 	 * contrôlons pas l'existence de la méthode par choix :
 	 * l'utilisateur aura ainsi bien une erreur de non existence
 	 * de méthode auprès de PDO.
+	 * @param string $name La méthode à appeler.
+	 * @param array $args Les paramètres de la méthode à appeler.
 	 */
 	public function __call($name, array $args)
 	{

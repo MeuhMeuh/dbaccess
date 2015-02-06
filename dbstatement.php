@@ -19,7 +19,11 @@ class DbStatement extends PDOStatement {
     protected   $execCount = 0;
 
     /**
-     * When bindValue() is called, we store its params
+     * "Bind" d'une valeur.
+     * @param string $parameter Le paramètre pour lequel "bind" la value.
+     * @param mixed $value La valeur à "bind".
+     * @param string $PDOType Le type de valeur. Optionnel.
+     * @return self
      */
     public function bindValue($parameter, $value, $PDOType = null)
     {
@@ -36,7 +40,10 @@ class DbStatement extends PDOStatement {
     }
 
     /**
-     * Binds several values at once
+     * "Bind" de plusieurs valeurs.
+     * @param array $sqlValues Les valeurs, sous la forme parameter => value.
+     * 
+     * @return self
      */
     public function bindValues($sqlValues = array()) {
 
